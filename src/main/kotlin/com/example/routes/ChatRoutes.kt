@@ -19,7 +19,7 @@ fun Route.chatSocket(roomController: RoomController) {
             close(CloseReason(CloseReason.Codes.VIOLATED_POLICY, "No session"))
             return@webSocket
         }
-        try {// we need to join the user to the hat room
+        try {// we need to join the user to the that room
             roomController.onJoin(
                 username = session.username,
                 sessionId = session.sessionId,
