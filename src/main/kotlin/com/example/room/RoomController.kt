@@ -30,15 +30,14 @@ class RoomController(
     }
 
     suspend fun sendMessage(senderUsername: String, message:String){
+        val messageEntity = Message(
+            text = message,
+            username = senderUsername,
+            timestamp = System.currentTimeMillis()
+        )
+        // insert it into db
+        messageDataSource.insertMessage(messageEntity)
         members.values.forEach { member ->
-            val messageEntity = Message(
-                text = message,
-                username = senderUsername,
-                timestamp = System.currentTimeMillis()
-            )
-            // insert it into db
-            messageDataSource.insertMessage(messageEntity)
-
             // send the message to user via websockets.We normally send the message inform of frames (string bytes.)
             val parsedMessage = Json.encodeToString(messageEntity)
             member.socket.send(Frame.Text(parsedMessage))
